@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_rotationB.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iait-elm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/06 17:19:43 by iait-elm          #+#    #+#             */
+/*   Updated: 2026/11/06 17:19:44 by iait-elm         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../push_swap.h"
 /* Sort exactly three elements in ascending order.
  * ترتيب ثلاثة عناصر تصاعدياً.
@@ -59,7 +71,7 @@ void    find_target_b(t_list *a, t_list *b, size_t ops[11])
 void    sort_a_to_b(t_list *a, t_list *b, size_t ops[11])
 {
     t_node  *cheapest;
-    
+
     while (get_stack_size(a) > 3)
     {
         assign_index(a, b);
