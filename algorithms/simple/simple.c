@@ -1,5 +1,5 @@
 
-#include "../push_swap.h"
+#include "../../push_swap.h"
 
 int	get_stack_size(t_list *a)
 {
@@ -54,33 +54,6 @@ static int	is_sorted(t_list *a)
 	return (1);
 }
 
-static void	sort_three(t_list *a, size_t ops[11])
-{
-	int	first;
-	int	second;
-	int	third;
-
-	first = a->head->num;
-	second = a->head->next->num;
-	third = a->tail->num;
-	if (first > second && second < third && first < third)
-		swap_sa(a->head, a->head->next, ops);
-	else if (first > second && second > third)
-	{
-		swap_sa(a->head, a->head->next, ops);
-		rotate_rra(a, ops);
-	}
-	else if (first > second && second < third && first > third)
-		rotate_ra(a, ops);
-	else if (first < second && second > third && first < third)
-	{
-		swap_sa(a->head, a->head->next, ops);
-		rotate_ra(a, ops);
-	}
-	else if (first < second && second > third && first > third)
-		rotate_rra(a, ops);
-}
-
 static void	bring_min_to_top(t_list *a, size_t ops[11])
 {
 	int	size;
@@ -103,25 +76,6 @@ static void	bring_min_to_top(t_list *a, size_t ops[11])
 	}
 }
 
-static void	sort_four(t_list *a, t_list *b, size_t ops[11])
-{
-	bring_min_to_top(a, ops);
-	push_pb(b, a, ops);
-	sort_three(a, ops);
-	push_pa(b, a, ops);
-}
-
-static void	sort_five(t_list *a, t_list *b, size_t ops[11])
-{
-	bring_min_to_top(a, ops);
-	push_pb(b, a, ops);
-	bring_min_to_top(a, ops);
-	push_pb(b, a, ops);
-	sort_three(a, ops);
-	push_pa(b, a, ops);
-	push_pa(b, a, ops);
-}
-
 void	simple(t_list *a, t_list *b, size_t ops[11])
 {
 	int	size;
@@ -136,10 +90,6 @@ void	simple(t_list *a, t_list *b, size_t ops[11])
 	}
 	else if (size == 3)
 		sort_three(a, ops);
-	else if (size == 4)
-		sort_four(a, b, ops);
-	else if (size == 5)
-		sort_five(a, b, ops);
 	else
 	{
 		while (a->head)

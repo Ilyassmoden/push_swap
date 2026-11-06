@@ -97,6 +97,9 @@ void	ft_lstclear(t_list *list);
 void	ft_putnbr_fd(int fd, int n);
 void	ft_putstr_fd(int fd, const char *s);
 t_node	*ft_lstnew(int num);
+int     ft_abs(int n);
+int     ft_max(int a, int b);
+int     ft_min(int a, int b);
 
 /*Parsing*/
 int		parse_input(int ac, char **av, t_list *a,
@@ -105,6 +108,36 @@ int		parse_input(int ac, char **av, t_list *a,
 /* Algorithm selection */
 void	print_algorithm(t_list *a, t_list *b,
 			int flags[BENCH_IDX + 1]);
+//compliex
+/* --- Cost and Index Functions --- */
+void    assign_index(t_list *a, t_list *b);
+void    calculate_cost(t_list *a, t_list *b);
+t_node  *find_cheapest(t_list *a);
+
+/* --- Target Utilities Functions --- */
+void    find_target(t_list *a, t_list *b);
+t_node  *find_next_bigger(t_list *a, int num);
+t_node  *find_min_node(t_list *a);
+void    find_target_b_to_a(t_list *b, t_list *a);
+
+/* --- Rotate and Execution Functions --- */
+void    rotate_num(int count, t_list *a, t_list *b,
+            char *s, size_t ops[11]);
+void    execute_rotations(t_list *a, t_list *b,
+            t_node *cheapest, size_t ops[11]);
+void    execute_moves(t_list *a, t_list *b,
+            t_node *cheapest, size_t ops[11]);
+void    execute_moves_b(t_list *a, t_list *b,
+            t_node *cheapest, size_t ops[11]);
+
+/* --- Turk Sort Main Functions --- */
+void    sort_three(t_list *a, size_t ops[11]);
+void    sort_a_to_b(t_list *a, t_list *b, size_t ops[11]);
+void    find_target_b(t_list *a, t_list *b, size_t ops[11]);
+void    sort_b_to_a(t_list *a, t_list *b, size_t ops[11]);
+void    final_rotate(t_list *a, size_t ops[11]);
+void    complex(t_list *a, t_list *b, size_t ops[11]);
+
 
 /* Benchmark */
 void	print_bench(int flags[BENCH_IDX + 1], float disorder,

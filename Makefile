@@ -3,7 +3,7 @@ NAME = push_swap
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = $(wildcard *.c algorithms/*.c utils/*.c operations/*.c)
+SRCS = $(wildcard *.c algorithms/complex/*.c algorithms/medium/*.c algorithms/simple/*.c utils/*.c operations/*.c)
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
