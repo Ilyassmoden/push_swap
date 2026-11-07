@@ -6,7 +6,7 @@
 /*   By: yalahian <yalahian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/02 21:33:21 by yalahian          #+#    #+#             */
-/*   Updated: 2026/11/04 02:11:21 by yalahian         ###   ########.fr       */
+/*   Updated: 2026/11/07 04:42:34 by yalahian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ int	ft_atoi(const char *s, int *num)
 	{
 		digits = 1;
 		n = (n * 10) + (*s - '0');
-		if (sign == 1 && n > 2147483647)
-			return (0);
-		else if (sign == -1 && n > 2147483648)
+		if ((sign == 1 && n > 2147483647) || (sign == -1 && n > 2147483648))
 			return (0);
 		s++;
 	}

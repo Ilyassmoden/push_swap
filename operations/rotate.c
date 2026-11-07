@@ -1,67 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iait-elm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yalahian <yalahian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 09:05:47 by iait-elm          #+#    #+#             */
-/*   Updated: 2026/11/03 09:05:48 by iait-elm         ###   ########.fr       */
+/*   Updated: 2026/11/07 08:58:33 by yalahian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-void	rotate_ra(t_list *stakA, size_t ops[RRR + 1])
+static void	rotate_list(t_list *a)
 {
-	t_node	*tmp;
+	t_node	*old_head;
 
-	if (!stakA || !stakA->head || !stakA->head->next)
+	if (!a || a->size < 2)
 		return ;
-	tmp = stakA->head;
-	stakA->head = stakA->head->next;
-	tmp->next = NULL;
-	stakA->tail->next = tmp;
-	stakA->tail = tmp;
-	ops[RA]++; 
-	write(1, "ra\n", 3);
+	old_head = a->head;
+	a->head = old_head->next;
+	a->head->prev = NULL;
+	old_head->next = NULL;
+	old_head->prev = a->tail;
+	a->tail->next = old_head;
+	a->tail = old_head;
 }
 
-void	rotate_rb(t_list *stakB, size_t ops[RRR + 1])
+void	rotate(t_stacks *stacks, int op_idx, int silent)
 {
-	t_node	*tmp;
-
-	if (!stakB || !stakB->head || !stakB->head->next)
+	if (op_idx == RA_IDX)
+		rotate_list(&stacks->a);
+	else if (op_idx == RB_IDX)
+		rotate_list(&stacks->b);
+	else if (op_idx == RR_IDX)
+	{
+		rotate_list(&stacks->a);
+		rotate_list(&stacks->b);
+	}
+	if (silent)
 		return ;
-	tmp = stakB->head;
-	stakB->head = stakB->head->next;
-	tmp->next = NULL;
-	stakB->tail->next = tmp;
-	stakB->tail = tmp;
-	ops[RB]++;
-	write(1, "rb\n", 3);
-}
-
-void	rotate_rr(t_list *stakA, t_list *stakB, size_t ops[RRR + 1])
-{
-	t_node	*tmp;
-
-	if (stakA && stakA->head && stakA->head->next)
-	{
-		tmp = stakA->head;
-		stakA->head = stakA->head->next;
-		tmp->next = NULL;
-		stakA->tail->next = tmp;
-		stakA->tail = tmp;
-	}
-	if (stakB && stakB->head && stakB->head->next)
-	{
-		tmp = stakB->head;
-		stakB->head = stakB->head->next;
-		tmp->next = NULL;
-		stakB->tail->next = tmp;
-		stakB->tail = tmp;
-	}
-	ops[RR]++;
-	write(1, "rr\n", 3);
+	stacks->ops[op_idx].count++;
+	ft_putstr_fd(1, stacks->ops[op_idx].label);
+	ft_putstr_fd(1, "\n");
 }

@@ -16,10 +16,18 @@ void	ft_lstadd_back(t_list *list, t_node *node)
 {
 	if (!list || !node)
 		return ;
-	if (list->tail)
+	node->next = NULL;
+	if (list->size)
+	{
+		node->prev = list->tail;
 		list->tail->next = node;
+		list->tail = node;
+	}
 	else
+	{
+		node->prev = NULL;
 		list->head = node;
-	node->prev = list->tail;
-	list->tail = node;
+		list->tail = node;
+	}
+	list->size++;
 }

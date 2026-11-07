@@ -3,59 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   swap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iait-elm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yalahian <yalahian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 09:05:47 by iait-elm          #+#    #+#             */
-/*   Updated: 2026/11/03 09:05:48 by iait-elm         ###   ########.fr       */
+/*   Updated: 2026/11/07 08:59:06 by yalahian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-void    swap_sa(t_node *a, t_node *b, size_t ops[RRR + 1])
+static void	swap_list(t_list *list)
 {
-    int tmp;
+	t_node	*first;
+	t_node	*second;
+	t_node	*third;
 
-    (void)b;
-    if (!a || !a->next)
-        return ;
-    tmp = a->num;
-    a->num = a->next->num;
-    a->next->num = tmp;
-    ops[SA]++;
-    write(1, "sa\n", 3);
+	if (!list || list->size < 2)
+		return ;
+	first = list->head;
+	second = first->next;
+	third = second->next;
+	first->next = third;
+	first->prev = second;
+	second->next = first;
+	second->prev = NULL;
+	if (third)
+		third->prev = first;
+	else
+		list->tail = first;
+	list->head = second;
 }
 
-void    swap_sb(t_node *a, t_node *b, size_t ops[RRR + 1])
+void	swap(t_stacks *stacks, int op_idx, int silent)
 {
-    int tmp;
-
-    (void)a;
-    if (!b || !b->next)
-        return ;
-    tmp = b->num;
-    b->num = b->next->num;
-    b->next->num = tmp;
-    ops[SB]++;
-    write(1, "sb\n", 3);
-}
-
-void	swap_ss(t_list *stack_a, t_list *stack_b, size_t ops[RRR + 1])
-{
-	int	tmp;
-
-	if (stack_a && stack_a->head && stack_a->head->next)
+	if (op_idx == SA_IDX)
+		swap_list(&stacks->a);
+	else if (op_idx == SB_IDX)
+		swap_list(&stacks->b);
+	else if (op_idx == SS_IDX)
 	{
-		tmp = stack_a->head->num;
-		stack_a->head->num = stack_a->head->next->num;
-		stack_a->head->next->num = tmp;
+		swap_list(&stacks->a);
+		swap_list(&stacks->b);
 	}
-	if (stack_b && stack_b->head && stack_b->head->next)
-	{
-		tmp = stack_b->head->num;
-		stack_b->head->num = stack_b->head->next->num;
-		stack_b->head->next->num = tmp;
-	}
-	ops[SS]++;
-	write(1, "ss\n", 3);
+	if (silent)
+		return ;
+	stacks->ops[op_idx].count++;
+	ft_putstr_fd(1, stacks->ops[op_idx].label);
+	ft_putstr_fd(1, "\n");
 }

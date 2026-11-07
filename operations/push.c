@@ -1,63 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iait-elm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yalahian <yalahian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 09:05:47 by iait-elm          #+#    #+#             */
-/*   Updated: 2026/11/03 09:05:48 by iait-elm         ###   ########.fr       */
+/*   Updated: 2026/11/07 08:58:19 by yalahian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-void	push_pa(t_list *stackB, t_list *stackA, size_t ops[RRR + 1])
+static void	push_list(t_list *a, t_list *b)
 {
-	t_node	*tmp;
+	t_node	*second;
 
-	if (!stackB || !stackB->head)
+	if (!a->size)
 		return ;
-	tmp = stackB->head;
-	stackB->head = stackB->head->next;
-	if (!stackB->head)
-		stackB->tail = NULL;
-	if (!stackA->head)
-	{
-		stackA->head = tmp;
-		stackA->tail = tmp;
-		tmp->next = NULL;
-	}
+	second = a->head->next;
+	ft_lstadd_front(b, a->head);
+	a->head = second;
+	if (second)
+		second->prev = NULL;
 	else
-	{
-		tmp->next = stackA->head;
-		stackA->head = tmp;
-	}
-	ops[PA]++;
-	write(1, "pa\n", 3);
+		a->tail = second;
+	a->size--;
 }
 
-void	push_pb(t_list *stackB, t_list *stackA, size_t ops[RRR + 1])
+void	push(t_stacks *stacks, int op_idx, int silent)
 {
-	t_node	*tmp;
-
-	if (!stackA || !stackA->head)
+	if (op_idx == PA_IDX)
+		push_list(&stacks->b, &stacks->a);
+	else if (op_idx == PB_IDX)
+		push_list(&stacks->a, &stacks->b);
+	if (silent)
 		return ;
-	tmp = stackA->head;
-	stackA->head = stackA->head->next;
-	if (!stackA->head)
-		stackA->tail = NULL;
-	if (!stackB->head)
-	{
-		stackB->head = tmp;
-		stackB->tail = tmp;
-		tmp->next = NULL;
-	}
-	else
-	{
-		tmp->next = stackB->head;
-		stackB->head = tmp;
-	}
-	ops[PB]++;
-	write(1, "pb\n", 3);
+	stacks->ops[op_idx].count++;
+	ft_putstr_fd(1, stacks->ops[op_idx].label);
+	ft_putstr_fd(1, "\n");
 }

@@ -1,76 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   rrotate.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iait-elm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yalahian <yalahian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 09:05:47 by iait-elm          #+#    #+#             */
-/*   Updated: 2026/11/03 09:05:48 by iait-elm         ###   ########.fr       */
+/*   Updated: 2026/11/07 08:58:56 by yalahian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-void	rotate_rra(t_list *stakA, size_t ops[RRR + 1])
+static void	rrotate_list(t_list *list)
 {
-	t_node	*tmp;
-	t_node	*last;
+	t_node	*old_tail;
 
-	if (!stakA || !stakA->head || !stakA->head->next)
+	if (!list || list->size < 2)
 		return ;
-	tmp = stakA->head;
-	last = stakA->head;
-	while (last->next->next)
-		last = last->next;
-	stakA->head = last->next;
-	last->next->next = tmp;
-	last->next = NULL;
-	stakA->tail = last;
-	ops[RRA]++;
-	write(1, "rra\n", 4);
+	old_tail = list->tail;
+	list->tail = old_tail->prev;
+	list->tail->next = NULL;
+	old_tail->prev = NULL;
+	old_tail->next = list->head;
+	list->head->prev = old_tail;
+	list->head = old_tail;
 }
 
-void	rotate_rrb(t_list *stakB, size_t ops[RRR + 1])
+void	rrotate(t_stacks *stacks, int op_idx, int silent)
 {
-	t_node	*tmp;
-	t_node	*last;
-
-	if (!stakB || !stakB->head || !stakB->head->next)
+	if (op_idx == RRA_IDX)
+		rrotate_list(&stacks->a);
+	else if (op_idx == RRB_IDX)
+		rrotate_list(&stacks->b);
+	else if (op_idx == RRR_IDX)
+	{
+		rrotate_list(&stacks->a);
+		rrotate_list(&stacks->b);
+	}
+	if (silent)
 		return ;
-	tmp = stakB->head;
-	last = stakB->head;
-	while (last->next->next)
-		last = last->next;
-	stakB->head = last->next;
-	last->next->next = tmp;
-	last->next = NULL;
-	stakB->tail = last;
-	ops[RRB]++;
-	write(1, "rrb\n", 4);
-}
-
-static void	reverse_rotate(t_list *stack)
-{
-	t_node	*tmp;
-	t_node	*last;
-
-	if (!stack || !stack->head || !stack->head->next)
-		return ;
-	tmp = stack->head;
-	last = stack->head;
-	while (last->next->next)
-		last = last->next;
-	stack->head = last->next;
-	last->next->next = tmp;
-	last->next = NULL;
-	stack->tail = last;
-}
-
-void	rotate_rrr(t_list *stakA, t_list *stakB, size_t ops[RRR + 1])
-{
-	reverse_rotate(stakA);
-	reverse_rotate(stakB);
-	ops[RRR]++;
-	write(1, "rrr\n", 4);
+	stacks->ops[op_idx].count++;
+	ft_putstr_fd(1, stacks->ops[op_idx].label);
+	ft_putstr_fd(1, "\n");
 }

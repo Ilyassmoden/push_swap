@@ -19,8 +19,7 @@ t_node	*ft_lstnew(int num)
 	node = malloc(sizeof(t_node));
 	if (!node)
 		return (NULL);
+	ft_bzero(node, sizeof(t_node));
 	node->num = num;
-	node->next = NULL;
-	node->prev = NULL;
 	return (node);
 }

@@ -6,7 +6,7 @@
 /*   By: yalahian <yalahian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 00:24:11 by yalahian          #+#    #+#             */
-/*   Updated: 2026/11/03 00:26:49 by yalahian         ###   ########.fr       */
+/*   Updated: 2026/11/07 07:51:24 by yalahian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,5 @@ void	ft_lstclear(t_list *a)
 		a->head = temp;
 	}
 	a->tail = NULL;
+	a->size = 0;
 }

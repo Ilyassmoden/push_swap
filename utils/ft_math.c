@@ -10,23 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_abs(int n)
+int	ft_abs(int n)
 {
-    if (n < 0)
-        return (n * -1);
-    return (n);
+	if (n < 0)
+		return (n * -1);
+	return (n);
 }
 
-int ft_max(int a, int b)
+int	ft_max(int a, int b)
 {
-    if (a > b)
-        return (a);
-    return (b);
+	if (a > b)
+		return (a);
+	return (b);
 }
 
-int ft_min(int a, int b)
+int	ft_min(int a, int b)
 {
-    if (a < b)
-        return (a);
-    return (b);
+	if (a < b)
+		return (a);
+	return (b);
 }

@@ -10,27 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../push_swap.h"
+#include "../push_swap.h"
 
-/* Helper function to find the best target in B.
+/* Find the biggest number smaller than the given number in B.
+ * إيجاد أكبر رقم أصغر من الرقم المعطى داخل B.
  */
-static t_node	*find_best_target(t_list *b, int i_num)
+static t_node	*find_best_target(t_stacks *stacks, int num)
 {
 	t_node	*j;
 	t_node	*target;
 	t_node	*max;
 
-	j = b->head;
+	j = stacks->b.head;
 	target = NULL;
 	while (j)
 	{
-		if (i_num > j->num && (!target || j->num > target->num))
+		if (num > j->num && (!target || j->num > target->num))
 			target = j;
 		j = j->next;
 	}
 	if (!target)
 	{
-		j = b->head;
+		j = stacks->b.head;
 		max = j;
 		while (j)
 		{
@@ -43,32 +44,34 @@ static t_node	*find_best_target(t_list *b, int i_num)
 	return (target);
 }
 
-/* Find the target node in stack B for every node in A.
-- إيجاد أكبر عنصر أصغر من كل عنصر في A داخل B.
+/* Find the target in B for every node in A.
+ * إيجاد Target لكل عنصر في A داخل B.
  */
-void	find_target(t_list *a, t_list *b)
+void	find_target(t_stacks *stacks)
 {
 	t_node	*i;
+	t_node	*target;
 
-	if (!a || !b || !b->head)
+	if (!stacks->a.head || !stacks->b.head)
 		return ;
-	i = a->head;
+	i = stacks->a.head;
 	while (i)
 	{
-		i->target_index = find_best_target(b, i->num)->index;
+		target = find_best_target(stacks, i->num);
+		i->target_index = target->index;
 		i = i->next;
 	}
 }
 
-/* Find the correct target in A and move the cheapest node from B.
-- إيجاد المكان المناسب في A ثم نقل العنصر الأرخص من B.
+/* Find the smallest number bigger than the given number in A.
+ * إيجاد أصغر رقم أكبر من الرقم المعطى داخل A.
  */
-t_node	*find_next_bigger(t_list *a, int num)
+static t_node	*find_next_bigger(t_stacks *stacks, int num)
 {
 	t_node	*j;
 	t_node	*target;
 
-	j = a->head;
+	j = stacks->a.head;
 	target = NULL;
 	while (j)
 	{
@@ -79,12 +82,17 @@ t_node	*find_next_bigger(t_list *a, int num)
 	return (target);
 }
 
-t_node	*find_min_node(t_list *a)
+/* Find the smallest node in A.
+ * إيجاد أصغر عنصر في A.
+ */
+static t_node	*find_min_node(t_stacks *stacks)
 {
 	t_node	*j;
 	t_node	*min;
 
-	j = a->head;
+	j = stacks->a.head;
+	if (!j)
+		return (NULL);
 	min = j;
 	while (j)
 	{
@@ -95,56 +103,23 @@ t_node	*find_min_node(t_list *a)
 	return (min);
 }
 
-void	find_target_b_to_a(t_list *b, t_list *a)
+/* Find the target in A for every node in B.
+ * إيجاد Target لكل عنصر في B داخل A.
+ */
+void	find_target_b_to_a(t_stacks *stacks)
 {
 	t_node	*i;
 	t_node	*target;
 
-	if (!a || !a->head || !b)
+	if (!stacks->a.head || !stacks->b.head)
 		return ;
-	i = b->head;
+	i = stacks->b.head;
 	while (i)
 	{
-		target = find_next_bigger(a, i->num);
+		target = find_next_bigger(stacks, i->num);
 		if (!target)
-			target = find_min_node(a);
+			target = find_min_node(stacks);
 		i->target_index = target->index;
 		i = i->next;
 	}
-}
-
-/* Put the smallest element at the top of stack A.
-- وضع أصغر عنصر في أعلى Stack A.
- */
-void	final_rotate(t_list *a, size_t ops[11])
-{
-	t_node		*current;
-	int			min;
-	int			index;
-	int			size;
-	t_stacks	st;
-
-	if (!a || !a->head)
-		return ;
-	assign_index(a, NULL);
-	current = a->head;
-	min = current->num;
-	index = current->index;
-	size = get_stack_size(a);
-	while (current)
-	{
-		if (current->num < min)
-		{
-			min = current->num;
-			index = current->index;
-		}
-		current = current->next;
-	}
-	st.a = a;
-	st.b = NULL;
-	st.ops = ops;
-	if (index <= size / 2)
-		rotate_num(index, "ra", &st);
-	else
-		rotate_num(size - index, "rra", &st);
 }

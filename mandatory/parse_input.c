@@ -6,13 +6,13 @@
 /*   By: yalahian <yalahian@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/02 19:52:31 by yalahian          #+#    #+#             */
-/*   Updated: 2026/11/04 05:57:13 by yalahian         ###   ########.fr       */
+/*   Updated: 2026/11/07 07:16:03 by yalahian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../push_swap.h"
 
-static int	set_flag(int flags[BENCH_IDX + 1], const char *arg)
+static int	set_flag(int *flags, const char *arg)
 {
 	if (flags[SIMPLE_IDX] || flags[MEDIUM_IDX]
 		|| flags[COMPLEX_IDX] || flags[ADAPTIVE_IDX])
@@ -64,7 +64,7 @@ static void	free_split(char **split)
 	free(split);
 }
 
-int	parse_input(int ac, char **av, t_list *a, int flags[BENCH_IDX + 1])
+int	parse_input(int ac, char **av, t_list *a, int *flags)
 {
 	int		i;
 	int		j;
@@ -79,7 +79,7 @@ int	parse_input(int ac, char **av, t_list *a, int flags[BENCH_IDX + 1])
 			return (0);
 		while (s[j])
 		{
-			if (!a->head && set_flag(flags, s[j]))
+			if (!a->size && set_flag(flags, s[j]))
 				;
 			else if (!stack_push(a, s[j]))
 				return (free_split(s), 0);
